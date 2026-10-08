@@ -52,7 +52,7 @@ def main() -> None:
     if listings.empty:
         logger.error("No land listings came back. Realtor.com may be blocking requests; "
                      "try again later or set config.PROXY.")
-        return
+        raise SystemExit(1)   # non-zero so a scheduled/CI run shows as failed
     firms = build_firms(listings)
     logger.info("%d land listings -> %d firms with 1+ land listing", len(listings), len(firms))
 

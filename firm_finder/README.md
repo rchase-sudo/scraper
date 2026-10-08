@@ -40,7 +40,21 @@ cd firm_finder
 pip install -r requirements.txt
 ```
 
-## Run
+## Run on GitHub (no setup on your computer)
+
+1. Repo → **Actions** tab → **CA land-firm finder** → **Run workflow**.
+2. Pick counties (comma-separated, or `all`), whether to check websites, the
+   DRE list, and the CRM option (`none`, `dry-run`, `push`).
+3. When it finishes, open the run: the summary shows the counts, and the CSVs
+   download under **Artifacts** (kept 30 days).
+
+For the CRM options, add two repo secrets first (repo → Settings → Secrets
+and variables → Actions): `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`.
+
+To run it automatically, uncomment the `schedule:` lines in
+`.github/workflows/firm-finder.yml`.
+
+## Run on your computer
 
 ```powershell
 python run.py --counties "Placer" "El Dorado"   # test on 2 counties first
