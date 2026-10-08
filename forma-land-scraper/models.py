@@ -30,4 +30,8 @@ class Listing:
             return self.agent_email.strip().lower()
         # fall back to name+brokerage if no email was found, so we still group
         # multiple listings from the same agent even without an email on file
-        return f"{self.agent_name.strip().lower()}|{self.brokerage.strip().lower()}"
+        if self.agent_name.strip():
+            return f"{self.agent_name.strip().lower()}|{self.brokerage.strip().lower()}"
+        # no email and no name: keep the listing on its own rather than merging
+        # every unidentified listing into one fake "agent"
+        return f"listing:{self.listing_url}"

@@ -1,0 +1,5 @@
+homeharvest>=0.8.18
+pandas>=2.0
+requests>=2.31
+xlrd>=2.0      # reads the DRE file if it comes as .xls
+openpyxl>=3.1  # reads the DRE file if it comes as .xlsx
