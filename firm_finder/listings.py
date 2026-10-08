@@ -3,6 +3,7 @@ using the HomeHarvest library. Each listing carries the listing agent, office
 and broker, which is how we find the firms that do land deals."""
 
 import random
+import re
 import time
 
 import pandas as pd
@@ -16,6 +17,7 @@ logger = setup_logger("listings")
 def _scrape_county(county: str) -> pd.DataFrame:
     from homeharvest import scrape_property  # imported here so tests don't need it
 
+    county = re.sub(r"\s+county$", "", county.strip(), flags=re.IGNORECASE)  # "Placer County" -> "Placer"
     location = f"{county} County, {config.STATE}"
     last_error = None
     for attempt in range(1, config.LISTING_RETRIES + 1):
