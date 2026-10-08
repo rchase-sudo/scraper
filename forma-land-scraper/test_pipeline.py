@@ -49,4 +49,14 @@ assert "jane@brokerco.com" in content
 assert "tom" not in content.lower() and "lee@" not in content.lower(), "Tom Lee has no email, should be excluded"
 assert content.count("\n") == 2 or content.strip().count("\n") + 1 == 2, "should have header + 1 data row (only jane has email)"
 
+# Price parser: a "k"/"m" elsewhere in the text must not multiply the price.
+from utils import parse_price
+assert parse_price("$250,000 - make an offer") == 250000
+assert parse_price("Price: $89,900 (Motivated seller!)") == 89900
+assert parse_price("$1.2M") == 1_200_000 and parse_price("$450K") == 450_000
+
+# Listings with no agent email and no agent name must not merge into one "agent".
+unnamed = [Listing(source="landwatch", listing_url=f"https://example.com/u{i}", acreage=5.0) for i in range(3)]
+assert len(dedupe_by_agent(unnamed)) == 3
+
 print("\nALL ASSERTIONS PASSED")

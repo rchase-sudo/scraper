@@ -87,16 +87,19 @@ def parse_price(text: str) -> float | None:
     if not text:
         return None
     text = text.replace(",", "")
-    match = re.search(r"[\d.]+", text)
+    # Only a K/M suffix directly after the number counts. Checking the whole
+    # string for "k"/"m" turned "$250,000 - make an offer" into $250 trillion.
+    match = re.search(r"(\d+(?:\.\d+)?)\s*(k|mm|m|thousand|million)?\b", text, re.IGNORECASE)
     if not match:
         return None
     try:
-        value = float(match.group())
+        value = float(match.group(1))
     except ValueError:
         return None
-    if "k" in text.lower():
+    suffix = (match.group(2) or "").lower()
+    if suffix in ("k", "thousand"):
         value *= 1_000
-    if "m" in text.lower() or "million" in text.lower():
+    elif suffix in ("m", "mm", "million"):
         value *= 1_000_000
     return value
 
